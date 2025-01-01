@@ -1,0 +1,36 @@
+---
+import Layout from './Layout.astro';
+import DestinationHeader from '../components/destinations/DestinationHeader.astro';
+
+interface Props {
+  title: string;
+  headerTitle: string;
+  imagePath: string;
+  imageAlt: string;
+}
+
+const { title, headerTitle, imagePath, imageAlt } = Astro.props;
+---
+
+<Layout title={title}>
+  <div class="destination-page">
+    <DestinationHeader 
+      title={headerTitle}
+      imagePath={imagePath}
+      imageAlt={imageAlt}
+    />
+    <slot />
+  </div>
+</Layout>
+
+<style>
+  .destination-page {
+    padding-top: 70px; /* Match navigation height */
+  }
+
+  @media (max-width: 768px) {
+    .destination-page {
+      padding-top: 70px;
+    }
+  }
+</style>

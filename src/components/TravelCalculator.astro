@@ -1,0 +1,73 @@
+---
+import { travelCosts } from '../data/travelCosts';
+import { formatCurrency, formatCountryName } from '../utils/formatters';
+import { calculateDailyBudget, findMatchingDestinations } from '../utils/calculations';
+
+interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<div class={`travel-calculator ${className}`}>
+  <h2>Travel Budget Calculator</h2>
+  <div class="calculator-form">
+    <div class="input-group">
+      <label for="duration">Duration (days)</label>
+      <input type="number" id="duration" min="1" value="7" />
+    </div>
+    <div class="input-group">
+      <label for="budget">Total Budget ($)</label>
+      <input type="number" id="budget" min="100" value="1000" />
+    </div>
+    <div class="result">
+      <p>Daily Budget: <span id="daily-budget">$0</span></p>
+    </div>
+    <div class="suggestions">
+      <h3>Suggested Destinations</h3>
+      <ul id="destination-list"></ul>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ travelCosts }}>
+  const durationInput = document.getElementById('duration');
+  const budgetInput = document.getElementById('budget');
+  const dailyBudgetSpan = document.getElementById('daily-budget');
+  const destinationList = document.getElementById('destination-list');
+  
+  function updateCalculator() {
+    if (!durationInput || !budgetInput || !dailyBudgetSpan || !destinationList) return;
+    
+    const duration = parseInt(durationInput.value || '7');
+    const totalBudget = parseInt(budgetInput.value || '1000');
+    const dailyBudget = totalBudget / duration;
+    
+    dailyBudgetSpan.textContent = `$${dailyBudget.toFixed(2)}`;
+    
+    const matches = travelCosts
+      .map(country => ({
+        country: country.country,
+        diff: Math.abs(country.mid - dailyBudget)
+      }))
+      .sort((a, b) => a.diff - b.diff)
+      .slice(0, 5);
+    
+    destinationList.innerHTML = matches
+      .map(match => `<li>${match.country.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</li>`)
+      .join('');
+  }
+
+  if (durationInput && budgetInput) {
+    durationInput.addEventListener('input', updateCalculator);
+    budgetInput.addEventListener('input', updateCalculator);
+    
+    // Initial calculation
+    updateCalculator();
+  }
+</script>
+
+<style>
+  /* Styles remain unchanged */
+</style>

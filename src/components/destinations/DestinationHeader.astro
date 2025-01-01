@@ -1,0 +1,87 @@
+---
+interface Props {
+  title: string;
+  imagePath: string;
+  imageAlt: string;
+}
+
+const { title, imagePath, imageAlt } = Astro.props;
+---
+
+<div class="destination-header">
+  <div class="image-container">
+    <img src={imagePath} alt={imageAlt} />
+  </div>
+  <div class="title-container">
+    <h1>{title}</h1>
+  </div>
+</div>
+
+<style>
+  .destination-header {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    margin: 0 0 2rem 0; /* Remove top margin */
+    overflow: hidden;
+  }
+
+  .image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .title-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 3rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  }
+
+  h1 {
+    color: white;
+    font-size: 3.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .destination-header {
+      height: 500px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .title-container {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .destination-header {
+      height: 400px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .title-container {
+      padding: 1.5rem;
+    }
+  }
+</style>

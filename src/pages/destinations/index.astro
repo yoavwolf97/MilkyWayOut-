@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PlanetToggle from '../../components/destinations/PlanetToggle.astro';
+import FilterBar from '../../components/destinations/FilterBar.astro';
+import DestinationGrid from '../../components/destinations/DestinationGrid.astro';
+import NoResults from '../../components/destinations/NoResults.astro';
+import { destinations } from '../../data/destinations';
+import { getBestTimeOptions } from '../../utils/filterUtils';
+import '../../styles/destinations.css';
+
+const filters = [
+  {
+    name: 'duration',
+    options: [
+      { value: 'short', label: '1-7 days' },
+      { value: 'medium', label: '8-14 days' },
+      { value: 'long', label: '14+ days' }
+    ]
+  },
+  {
+    name: 'bestTime',
+    options: getBestTimeOptions()
+  }
+];
+---
+
+<Layout title="Destinations - MilkyWayOut">
+  <div class="destinations-page">
+    <header class="page-header">
+      <h1>Explore Destinations</h1>
+      <p>Discover amazing places across Earth and Mars</p>
+    </header>
+
+    <PlanetToggle />
+    <FilterBar filters={filters} />
+    <NoResults />
+    <DestinationGrid destinations={destinations} />
+  </div>
+</Layout>
+
+<script src="../../scripts/destinationFilters.ts"></script>
+
+<style>
+  .destinations-page {
+    min-height: 100vh;
+    background: var(--background-dark);
+    color: white;
+    padding-top: calc(70px + 2rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .destinations-page {
+      padding-top: calc(70px + 1rem);
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+</style>

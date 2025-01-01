@@ -1,0 +1,13 @@
+---
+import DesktopNav from './DesktopNav.astro';
+import MobileNavbar from './MobileNavbar.astro';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<MobileNavbar />
+<DesktopNav currentPath={currentPath} />

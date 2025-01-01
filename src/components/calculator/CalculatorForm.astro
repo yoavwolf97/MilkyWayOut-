@@ -1,0 +1,147 @@
+---
+interface Props {
+  defaultBudget?: number;
+  defaultDuration?: number;
+}
+
+const { defaultBudget = 1000, defaultDuration = 7 } = Astro.props;
+---
+
+<form class="calculator-form" id="calculator-form">
+  <div class="inputs-container">
+    <div class="input-group">
+      <label for="budget">Total Budget ($)</label>
+      <input 
+        type="number" 
+        id="budget" 
+        name="budget" 
+        min="100" 
+        value={defaultBudget}
+        required 
+      />
+      <span class="error-message" id="budget-error"></span>
+    </div>
+    
+    <div class="input-group">
+      <label for="duration">Duration (days)</label>
+      <input 
+        type="number" 
+        id="duration" 
+        name="duration" 
+        min="1" 
+        value={defaultDuration}
+        required 
+      />
+      <span class="error-message" id="duration-error"></span>
+    </div>
+  </div>
+  
+  <button type="submit" class="calculate-btn">Calculate</button>
+</form>
+
+<script>
+  const form = document.getElementById('calculator-form');
+  const budgetInput = document.getElementById('budget') as HTMLInputElement;
+  const durationInput = document.getElementById('duration') as HTMLInputElement;
+  const budgetError = document.getElementById('budget-error');
+  const durationError = document.getElementById('duration-error');
+
+  function validateInputs() {
+    let isValid = true;
+    
+    if (!budgetInput.value || parseFloat(budgetInput.value) < 100) {
+      budgetError.textContent = 'Budget must be at least $100';
+      isValid = false;
+    } else {
+      budgetError.textContent = '';
+    }
+
+    if (!durationInput.value || parseInt(durationInput.value) < 1) {
+      durationError.textContent = 'Duration must be at least 1 day';
+      isValid = false;
+    } else {
+      durationError.textContent = '';
+    }
+
+    return isValid;
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (validateInputs()) {
+      const event = new CustomEvent('calculate', {
+        detail: {
+          budget: parseFloat(budgetInput.value),
+          duration: parseInt(durationInput.value)
+        }
+      });
+      document.dispatchEvent(event);
+    }
+  });
+</script>
+
+<style>
+  .calculator-form {
+    margin-bottom: 2rem;
+  }
+
+  .inputs-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  label {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  input {
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .error-message {
+    color: #dc2626;
+    font-size: 0.875rem;
+    min-height: 1.25rem;
+  }
+
+  .calculate-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .calculate-btn:hover {
+    background: var(--primary-dark);
+  }
+
+  @media (max-width: 640px) {
+    .inputs-container {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

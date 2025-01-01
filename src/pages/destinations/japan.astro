@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DestinationHeader from '../../components/destinations/DestinationHeader.astro';
+---
+
+<Layout title="Japan - MilkyWayOut">
+  <DestinationHeader 
+    title="Japan"
+    imagePath="/japan.jpg"
+    imageAlt="Mount Fuji at sunset with cherry blossoms in the foreground"
+  />
+
+  <div class="content">
+    <h2>Experience Japan</h2>
+    <p>Discover the perfect blend of ancient traditions and modern innovation in Japan. From serene temples and beautiful gardens to bustling cities and technological marvels, Japan offers a unique cultural experience like no other.</p>
+    
+    <h3>Highlights</h3>
+    <ul>
+      <li>Historic temples and shrines</li>
+      <li>Modern city experiences</li>
+      <li>Japanese cuisine</li>
+      <li>Cherry blossom season</li>
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+</style>

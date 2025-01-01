@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DestinationHeader from '../../components/destinations/DestinationHeader.astro';
+---
+
+<Layout title="Vietnam - MilkyWayOut">
+  <DestinationHeader 
+    title="Vietnam"
+    imagePath="/vietnam.jpg"
+    imageAlt="Traditional wooden boat on the Mekong Delta surrounded by lush vegetation"
+  />
+
+  <div class="content">
+    <h2>Explore Vietnam</h2>
+    <p>Journey through Vietnam's rich tapestry of culture, history, and natural beauty. From the bustling streets of Hanoi to the serene waters of Ha Long Bay, Vietnam offers an authentic Southeast Asian experience that captivates all who visit.</p>
+    
+    <h3>Highlights</h3>
+    <ul>
+      <li>Mekong Delta exploration</li>
+      <li>Street food culture</li>
+      <li>Ancient temples</li>
+      <li>Beautiful landscapes</li>
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+</style>

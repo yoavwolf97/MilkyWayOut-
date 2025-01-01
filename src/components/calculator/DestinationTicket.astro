@@ -1,0 +1,103 @@
+---
+interface Props {
+  name: string;
+  dailyCost: number;
+  difference: number;
+}
+
+const { name, dailyCost, difference } = Astro.props;
+const formattedName = name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+const destinationUrl = `/destinations/${name}`;
+---
+
+<div class="destination-ticket">
+  <div class="ticket-header">
+    <h3>{formattedName}</h3>
+    <span class="daily-cost">${dailyCost.toFixed(2)}/day</span>
+  </div>
+  
+  <div class={`budget-status ${difference > 0 ? 'under' : 'over'}`}>
+    {difference > 0 
+      ? `Under budget by $${difference.toFixed(2)}/day`
+      : `Need $${Math.abs(difference).toFixed(2)} more/day`
+    }
+  </div>
+  
+  <a href={destinationUrl} class="ticket-link">
+    View {formattedName} Guide
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<style>
+  .destination-ticket {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .destination-ticket:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .daily-cost {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .budget-status {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .under {
+    background: #DCF7E3;
+    color: #166534;
+  }
+
+  .over {
+    background: #FEE2E2;
+    color: #991B1B;
+  }
+
+  .ticket-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .ticket-link:hover {
+    color: var(--primary-dark);
+  }
+
+  .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .ticket-link:hover .arrow {
+    transform: translateX(4px);
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+import DestinationLayout from '../../layouts/DestinationLayout.astro';
+---
+
+<DestinationLayout 
+  title="Olympus Mons Base Camp - MilkyWayOut"
+  headerTitle="Olympus Mons Base Camp"
+  imagePath="/mars.jpg"
+  imageAlt="Stunning view of Olympus Mons, the solar system's largest volcano"
+>
+  <div class="content">
+    <h2>Olympus Mons Base Camp</h2>
+    <p>
+      Experience the thrill of camping at the base of the solar system's largest volcano. Olympus Mons Base Camp offers an unparalleled adventure for those seeking to explore Mars's most iconic landmark. Standing at nearly three times the height of Mount Everest, this massive shield volcano provides a spectacular backdrop for your Martian expedition.
+    </p>
+    
+    <h3>Base Camp Details</h3>
+    <ul>
+      <li>Duration: 14-21 days</li>
+      <li>Difficulty Level: Expert</li>
+      <li>Cost Range: $500,000 - $1,000,000</li>
+      <li>Best Time: Mars Summer</li>
+    </ul>
+
+    <h3>Activities</h3>
+    <ul>
+      <li>Volcano Hiking</li>
+      <li>Scientific Research</li>
+      <li>Space Photography</li>
+      <li>Geological Exploration</li>
+      <li>Base Camp Training</li>
+    </ul>
+
+    <div class="back-link">
+      <a href="/destinations" class="return-button">
+        ← Back to Destinations
+      </a>
+    </div>
+  </div>
+</DestinationLayout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .back-link {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .return-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .return-button:hover {
+    transform: translateY(-2px);
+    background: var(--primary-dark);
+  }
+</style>

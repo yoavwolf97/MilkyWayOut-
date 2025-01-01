@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DestinationHeader from '../../components/destinations/DestinationHeader.astro';
+---
+
+<Layout title="Sri Lanka - MilkyWayOut">
+  <DestinationHeader 
+    title="Sri Lanka"
+    imagePath="/sri_lanka.jpg"
+    imageAlt="Beautiful view of Sri Lankan tea plantations and mountains"
+  />
+
+  <div class="content">
+    <h2>Discover Sri Lanka</h2>
+    <p>
+      Known as the Pearl of the Indian Ocean, Sri Lanka offers a perfect blend of ancient history, rich culture, and stunning landscapes. From pristine beaches and lush rainforests to ancient temples and colonial architecture, this tropical paradise provides diverse experiences for every traveler.
+    </p>
+    
+    <h3>Highlights</h3>
+    <ul>
+      <li>Ancient Buddhist temples and ruins</li>
+      <li>Scenic tea plantations</li>
+      <li>Wildlife safaris and national parks</li>
+      <li>Beautiful beaches and coastal areas</li>
+      <li>Rich cultural heritage and festivals</li>
+    </ul>
+
+    <h3>Best Time to Visit</h3>
+    <p>
+      The best time to visit Sri Lanka depends on which region you plan to explore. The country experiences two monsoon seasons:
+      December to March is ideal for the west and south coasts, while May to September is better for the east coast.
+    </p>
+  </div>
+</Layout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+</style>

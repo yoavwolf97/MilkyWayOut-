@@ -1,0 +1,162 @@
+---
+const menuItems = [
+  { path: '/', label: 'Home', icon: '🏠' },
+  { path: '/destinations', label: 'Destinations', icon: '🌎' },
+  { path: '/calculator', label: 'Calculator', icon: '🧮' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<div id="mobile-menu" class="mobile-menu">
+  <div class="menu-overlay"></div>
+  <div class="menu-content">
+    <div class="menu-header">
+      <button id="close-menu" class="close-button" aria-label="Close menu">
+        <span class="close-icon">×</span>
+      </button>
+    </div>
+    {menuItems.map(item => (
+      <a 
+        href={item.path}
+        class={`menu-item ${currentPath === item.path ? 'active' : ''}`}
+      >
+        <span class="icon">{item.icon}</span>
+        <span class="label">{item.label}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .mobile-menu {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+  }
+
+  .menu-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: white;
+    padding: 1rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-menu.active {
+    visibility: visible;
+  }
+
+  .mobile-menu.active .menu-overlay {
+    opacity: 1;
+  }
+
+  .mobile-menu.active .menu-content {
+    transform: translateX(0);
+  }
+
+  .menu-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .close-button {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .close-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .close-icon {
+    font-size: 24px;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-item:hover {
+    background: var(--background);
+  }
+
+  .menu-item.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
+</style>
+
+<script>
+  const menu = document.getElementById('mobile-menu');
+  const overlay = menu?.querySelector('.menu-overlay');
+  const closeButton = document.getElementById('close-menu');
+
+  function closeMenu() {
+    const hamburgerButton = document.getElementById('mobile-menu-toggle');
+    menu?.classList.remove('active');
+    hamburgerButton?.classList.remove('active');
+  }
+
+  overlay?.addEventListener('click', closeMenu);
+  closeButton?.addEventListener('click', closeMenu);
+
+  // Prevent body scroll when menu is open
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.target.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  if (menu) {
+    observer.observe(menu, { attributes: true, attributeFilter: ['class'] });
+  }
+</script>

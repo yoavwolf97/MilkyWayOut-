@@ -1,0 +1,128 @@
+---
+import CalculatorForm from './CalculatorForm.astro';
+import { travelCosts } from '../../data/travelCosts';
+
+const defaultBudget = 1000;
+const defaultDuration = 7;
+---
+
+<div class="calculator">
+  <CalculatorForm defaultBudget={defaultBudget} defaultDuration={defaultDuration} />
+  
+  <div class="results">
+    <div class="daily-budget">
+      <h3>Your Daily Budget</h3>
+      <div class="amount">$<span id="daily-amount">0.00</span></div>
+    </div>
+    
+    <div class="recommendations">
+      <h3>Recommended Destinations</h3>
+      <ul id="destinations-list" class="destinations-list"></ul>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ travelCosts }}>
+  document.addEventListener('calculate', (e) => {
+    const { budget, duration } = e.detail;
+    const dailyBudget = budget / duration;
+    
+    // Update daily budget display
+    const dailyAmount = document.getElementById('daily-amount');
+    if (dailyAmount) {
+      dailyAmount.textContent = dailyBudget.toFixed(2);
+    }
+    
+    // Calculate and display recommendations
+    const recommendations = travelCosts
+      .map(country => ({
+        country: country.country,
+        cost: country.mid,
+        difference: dailyBudget - country.mid
+      }))
+      .sort((a, b) => Math.abs(a.difference) - Math.abs(b.difference))
+      .slice(0, 5);
+    
+    const destinationsList = document.getElementById('destinations-list');
+    if (destinationsList) {
+      destinationsList.innerHTML = recommendations
+        .map(rec => `
+          <li class="destination-item">
+            <div class="destination-info">
+              <span class="country">${rec.country.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+              <span class="cost">$${rec.cost.toFixed(2)}/day</span>
+            </div>
+            <div class="budget-status ${rec.difference >= 0 ? 'under' : 'over'}">
+              ${rec.difference >= 0 
+                ? `Under budget by $${rec.difference.toFixed(2)}/day`
+                : `Over budget by $${Math.abs(rec.difference).toFixed(2)}/day`
+              }
+            </div>
+          </li>
+        `)
+        .join('');
+    }
+  });
+</script>
+
+<style>
+  .calculator {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .results {
+    margin-top: 2rem;
+  }
+
+  .daily-budget {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .amount {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+  }
+
+  .destinations-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .destination-item {
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .destination-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .country {
+    font-weight: 500;
+  }
+
+  .budget-status {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .under {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .over {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+</style>

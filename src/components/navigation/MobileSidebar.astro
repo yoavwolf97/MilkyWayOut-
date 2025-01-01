@@ -1,0 +1,178 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const menuItems = [
+  { path: '/', label: 'Home', icon: '🏠' },
+  { path: '/destinations', label: 'Destinations', icon: '🌎' },
+  { path: '/calculator', label: 'Calculator', icon: '🧮' }
+];
+---
+
+<aside id="sidebar" class="mobile-sidebar">
+  <div class="sidebar-content">
+    <a href="/" class="logo-link">
+      <Image 
+        src="/half_logo.jpg"
+        alt="MilkyWayOut"
+        width={160}
+        height={64}
+        class="nav-logo"
+      />
+    </a>
+    <nav class="nav-links">
+      {menuItems.map(item => (
+        <a 
+          href={item.path} 
+          class={`menu-item ${currentPath === item.path ? 'active' : ''}`}
+        >
+          <span class="icon">{item.icon}</span>
+          <span class="label">{item.label}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</aside>
+
+<button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle Menu">
+  <span class="hamburger"></span>
+</button>
+
+<style>
+  .mobile-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    background: white;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .mobile-sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .menu-item:hover {
+    background: #f8fafc;
+    transform: translateX(4px);
+  }
+
+  .menu-item.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
+
+  .label {
+    font-weight: 500;
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 1001;
+    background: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    position: relative;
+  }
+
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    transition: transform 0.3s ease;
+  }
+
+  .hamburger::before {
+    top: -6px;
+  }
+
+  .hamburger::after {
+    bottom: -6px;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar-toggle {
+      display: block;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .mobile-sidebar,
+    .sidebar-toggle {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('sidebar-toggle');
+
+  toggle?.addEventListener('click', () => {
+    sidebar?.classList.toggle('active');
+    toggle.classList.toggle('active');
+  });
+
+  // Close sidebar when clicking outside
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('#sidebar') && !target.closest('#sidebar-toggle')) {
+      sidebar?.classList.remove('active');
+      toggle?.classList.remove('active');
+    }
+  });
+</script>

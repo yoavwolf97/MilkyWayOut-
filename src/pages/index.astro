@@ -1,0 +1,299 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { destinations } from '../data/destinations';
+
+const featuredDestinations = destinations.slice(0, 4);
+
+function getDestinationUrl(destination: typeof destinations[number]) {
+  if (destination.name === "Olympus Mons Base Camp") {
+    return "/destinations/olympus-mons";
+  }
+  return `/destinations/${destination.name.toLowerCase().replace(/\s+/g, '-')}`;
+}
+---
+
+<Layout title="MilckWayOut - Earth & Mars Travel Blog">
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="logo-container">
+        <Image 
+          src="/logo.png"
+          alt="MilckWayOut"
+          width={500}
+          height={200}
+          class="hero-logo"
+        />
+      </div>
+      <p>The first blog to write itineraries for traveling on Mars. And if Mars is too far, we've got Earth covered too!</p>
+      <a href="/destinations" class="cta-button">Explore Destinations</a>
+    </section>
+
+    <!-- Featured Destinations Section -->
+    <section class="destinations">
+      <h2>Featured Destinations</h2>
+      <div class="destination-grid">
+        {featuredDestinations.map((destination) => (
+          <a href={getDestinationUrl(destination)} class="destination-card">
+            <div class="card-content">
+              <div class="card-header">
+                <div class="planet-badge">{destination.planet === 'mars' ? '🔴' : '🌍'}</div>
+                <h3>{destination.name}</h3>
+              </div>
+              <p class="description">{destination.description}</p>
+              <div class="card-footer">
+                <div class="destination-meta">
+                  <span class="duration">
+                    <i class="icon">⏱️</i>
+                    {destination.duration}
+                  </span>
+                  <span class="cost">
+                    <i class="icon">💰</i>
+                    ${destination.costRange.min.toLocaleString()} - ${destination.costRange.max.toLocaleString()}
+                  </span>
+                </div>
+                <div class="difficulty">
+                  {Array(5).fill('').map((_, i) => (
+                    <span class={`star ${i < destination.difficulty ? 'filled' : ''}`}>★</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div class="card-backdrop"></div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Calculator CTA -->
+    <section class="calculator-cta">
+      <div class="cta-content">
+        <h2>Ready to Start Planning?</h2>
+        <p>Find the perfect destination that matches your budget</p>
+        <a href="/calculator" class="cta-button">Use Budget Calculator</a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+
+  .hero-logo {
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero {
+    padding: 6rem 1rem;
+    text-align: center;
+    background: var(--white);
+    border-radius: 1rem;
+    margin: 2rem auto;
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .destinations {
+    padding: 4rem 1rem;
+  }
+
+  .destinations h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+    color: var(--text);
+  }
+
+  .destination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .destination-card {
+    position: relative;
+    height: 280px;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
+    transition: transform 0.3s ease;
+  }
+
+  .destination-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-backdrop {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.8)
+    );
+    z-index: 1;
+    transition: background 0.3s ease;
+  }
+
+  .destination-card:hover .card-backdrop {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.9)
+    );
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .planet-badge {
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .destination-card h3 {
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .description {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    margin-top: auto;
+  }
+
+  .destination-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .duration, .cost {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .icon {
+    font-style: normal;
+  }
+
+  .difficulty {
+    font-size: 0.9rem;
+  }
+
+  .star {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .star.filled {
+    color: #FCD34D;
+  }
+
+  .calculator-cta {
+    background: var(--primary);
+    color: var(--white);
+    padding: 4rem 1rem;
+    border-radius: 1rem;
+    margin: 4rem auto;
+    text-align: center;
+  }
+
+  .calculator-cta h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .calculator-cta p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--white);
+    color: var(--primary);
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .cta-button:hover {
+    background: var(--background);
+  }
+
+  @media (max-width: 640px) {
+    .hero-logo {
+      max-width: 300px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+    }
+
+    .destination-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .destination-card {
+      height: 240px;
+    }
+  }
+</style>

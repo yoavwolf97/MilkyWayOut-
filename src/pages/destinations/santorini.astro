@@ -1,0 +1,142 @@
+---
+import DestinationLayout from '../../layouts/DestinationLayout.astro';
+import { getGreeceCosts } from '../../lib/supabase/queries';
+
+const costs = await getGreeceCosts();
+---
+
+<DestinationLayout
+  title="Santorini - MilkyWayOut"
+  headerTitle="Santorini"
+  imagePath="/santorini.jpg"
+  imageAlt="Beautiful sunset view of Santorini's white buildings and blue domes"
+>
+  <div class="content">
+    <h2>Discover Santorini</h2>
+    <p>
+      Perched on the edge of steep cliffs overlooking the Aegean Sea, Santorini is a 
+      picturesque Greek island known for its stunning sunsets, white-washed buildings, 
+      and blue-domed churches. This volcanic island offers a perfect blend of natural 
+      beauty, rich history, and modern luxury.
+    </p>
+    
+    <section class="costs-section">
+      <h2>Daily Cost Ranges</h2>
+      {costs ? (
+        <div class="cost-grid">
+          <div class="cost-item">
+            <span class="label">Budget</span>
+            <span class="amount">${costs.low}/day</span>
+          </div>
+          <div class="cost-item">
+            <span class="label">Average</span>
+            <span class="amount">${costs.mid}/day</span>
+          </div>
+          <div class="cost-item">
+            <span class="label">Luxury</span>
+            <span class="amount">${costs.high}/day</span>
+          </div>
+        </div>
+      ) : (
+        <div class="error">
+          <p>Cost information is currently unavailable</p>
+        </div>
+      )}
+    </section>
+
+    <h3>Highlights</h3>
+    <ul>
+      <li>Spectacular sunsets in Oia</li>
+      <li>Traditional Cycladic architecture</li>
+      <li>Volcanic beaches</li>
+      <li>Local wine tasting</li>
+      <li>Ancient ruins of Akrotiri</li>
+    </ul>
+
+    <h3>Best Time to Visit</h3>
+    <p>
+      The best time to visit Santorini is from April to October when the weather is warm 
+      and rainfall is minimal. Peak season is July and August, but visiting in shoulder 
+      season (April-May or September-October) offers pleasant weather with fewer crowds.
+    </p>
+  </div>
+</DestinationLayout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .costs-section {
+    margin-bottom: 3rem;
+    background: var(--background);
+    padding: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .cost-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .label {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .amount {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .error {
+    text-align: center;
+    color: var(--text-light);
+    padding: 1rem;
+  }
+</style>

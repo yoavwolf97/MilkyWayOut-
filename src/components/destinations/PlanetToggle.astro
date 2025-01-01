@@ -1,0 +1,111 @@
+---
+interface Props {
+  activePlanet?: 'earth' | 'mars';
+}
+
+const { activePlanet = 'earth' } = Astro.props;
+---
+
+<div class="planet-toggle">
+  <button 
+    class={`toggle-btn earth ${activePlanet === 'earth' ? 'active' : ''}`} 
+    data-planet="earth"
+  >
+    <span class="planet-icon">🌍</span>
+    Earth
+  </button>
+  <button 
+    class={`toggle-btn mars ${activePlanet === 'mars' ? 'active' : ''}`} 
+    data-planet="mars"
+  >
+    <span class="planet-icon">🔴</span>
+    Mars
+  </button>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.toggle-btn');
+  const destinationCards = document.querySelectorAll('.grid-item');
+  
+  function filterByPlanet(planet: string) {
+    destinationCards.forEach(card => {
+      const cardPlanet = (card as HTMLElement).dataset.planet;
+      card.classList.toggle('hidden', cardPlanet !== planet);
+    });
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Update button states
+      buttons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      // Filter destinations
+      const selectedPlanet = button.getAttribute('data-planet');
+      if (selectedPlanet) {
+        filterByPlanet(selectedPlanet);
+      }
+    });
+  });
+
+  // Initial filter
+  const activeButton = document.querySelector('.toggle-btn.active');
+  if (activeButton) {
+    const initialPlanet = activeButton.getAttribute('data-planet');
+    if (initialPlanet) {
+      filterByPlanet(initialPlanet);
+    }
+  }
+</script>
+
+<style>
+  .planet-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 1.5rem;
+    background: transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+
+  .toggle-btn.active {
+    background: var(--accent-gradient);
+    color: white;
+  }
+
+  .planet-icon {
+    font-size: 1.2rem;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .planet-toggle {
+      margin: 1rem 0;
+    }
+
+    .toggle-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>

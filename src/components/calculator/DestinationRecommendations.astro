@@ -1,0 +1,90 @@
+---
+import type { TravelCost } from '../../types/travel';
+
+interface Props {
+  dailyBudget: number;
+  recommendations: {
+    country: string;
+    cost: number;
+    difference: number;
+  }[];
+}
+
+const { dailyBudget, recommendations } = Astro.props;
+---
+
+<div class="recommendations">
+  <h3>Recommended Destinations</h3>
+  <div class="destinations-list">
+    {recommendations.map(rec => (
+      <div class="destination-item">
+        <div class="destination-info">
+          <span class="country">{rec.country.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+          <span class="cost">${rec.cost}/day</span>
+        </div>
+        {rec.difference > 0 ? (
+          <div class="budget-status under">Under budget by ${rec.difference.toFixed(2)}/day</div>
+        ) : (
+          <div class="budget-status over">Need ${Math.abs(rec.difference).toFixed(2)} more/day</div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .recommendations {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h3 {
+    color: #1E293B;
+    margin-bottom: 1.5rem;
+  }
+
+  .destinations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .destination-item {
+    padding: 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 0.5rem;
+  }
+
+  .destination-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .country {
+    font-weight: 500;
+    color: #1E293B;
+  }
+
+  .cost {
+    color: #64748B;
+  }
+
+  .budget-status {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .under {
+    background: #DCF7E3;
+    color: #166534;
+  }
+
+  .over {
+    background: #FEE2E2;
+    color: #991B1B;
+  }
+</style>

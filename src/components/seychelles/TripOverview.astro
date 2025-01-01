@@ -1,0 +1,97 @@
+---
+interface Props {
+  duration: string;
+  bestTime: string;
+  weather: string;
+  difficulty: string;
+  cost: string;
+}
+
+const { duration, bestTime, weather, difficulty, cost } = Astro.props;
+---
+
+<div class="trip-overview">
+  <div class="overview-grid">
+    <div class="overview-item">
+      <span class="icon">⏱️</span>
+      <div class="info">
+        <h3>Duration</h3>
+        <p>{duration}</p>
+      </div>
+    </div>
+    <div class="overview-item">
+      <span class="icon">🗓️</span>
+      <div class="info">
+        <h3>Best Time to Visit</h3>
+        <p>{bestTime}</p>
+      </div>
+    </div>
+    <div class="overview-item">
+      <span class="icon">☀️</span>
+      <div class="info">
+        <h3>Weather</h3>
+        <p>{weather}</p>
+      </div>
+    </div>
+    <div class="overview-item">
+      <span class="icon">⚡</span>
+      <div class="info">
+        <h3>Difficulty</h3>
+        <p>{difficulty}</p>
+      </div>
+    </div>
+    <div class="overview-item">
+      <span class="icon">💰</span>
+      <div class="info">
+        <h3>Cost Range</h3>
+        <p>{cost}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .trip-overview {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .overview-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    background: var(--background);
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .info h3 {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+  }
+
+  .info p {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .overview-grid {
+      gap: 1.5rem;
+    }
+  }
+</style>

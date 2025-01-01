@@ -1,0 +1,281 @@
+---
+import DestinationLayout from '../../layouts/DestinationLayout.astro';
+import TripOverview from '../../components/seychelles/TripOverview.astro';
+import SeychellesMap from '../../components/maps/SeychellesMap.astro';
+import ItineraryTimeline from '../../components/seychelles/ItineraryTimeline.astro';
+import TripHighlights from '../../components/seychelles/TripHighlights.astro';
+import { getSeychellesLocations } from '../../lib/supabase/queries';
+
+// Fetch locations data
+const locations = await getSeychellesLocations();
+
+const tripDetails = {
+  duration: "7-8 days",
+  bestTime: "April to May, September to November",
+  weather: "Tropical climate, 24-32°C (75-90°F)",
+  difficulty: "Easy to Moderate",
+  cost: "$2,000 - $3,000 USD"
+};
+
+const itinerary = [
+  {
+    days: "1-2",
+    location: "Mahe Island",
+    accommodation: "Waterfall Accommodation",
+    activities: [
+      "Explore Mahe by car",
+      "Visit multiple beaches along the coastline",
+      "Tea Factory visit with panoramic views",
+      "Hike the Morne Blanc Trail"
+    ]
+  },
+  {
+    days: "3-4",
+    location: "Praslin Island",
+    accommodation: "Villa Aya",
+    activities: [
+      "Visit Vallee de Mai National Park",
+      "Relax at Anse Lazio Beach",
+      "Explore the rare coco de mer palms"
+    ]
+  },
+  {
+    days: "5-6",
+    location: "La Digue Island",
+    accommodation: "Casa de Leela Self-Catering Apartments",
+    activities: [
+      "Bicycle exploration of the island",
+      "Visit the Tortoise Farm",
+      "Scuba diving with Trek Divers"
+    ]
+  },
+  {
+    days: "7-8",
+    location: "Mahe Island (Resort Stay)",
+    accommodation: "Savoy Resort and Spa",
+    activities: [
+      "Spa day at Boat House Spa",
+      "Visit Victoria Botanical Gardens",
+      "Final relaxation at the resort"
+    ]
+  }
+];
+
+const highlights = [
+  {
+    icon: "🏝️",
+    title: "Island Hopping",
+    description: "Experience three unique islands, each with its own character and charm"
+  },
+  {
+    icon: "🐢",
+    title: "Wildlife",
+    description: "Meet giant tortoises and discover rare species in their natural habitat"
+  },
+  {
+    icon: "🤿",
+    title: "Water Activities",
+    description: "World-class diving and snorkeling in crystal clear waters"
+  },
+  {
+    icon: "🌺",
+    title: "Nature",
+    description: "Explore pristine beaches, lush forests, and unique flora"
+  }
+];
+
+// Make locations available to client-side script
+const locationData = locations.map(({ id, coordinates }) => ({
+  id,
+  coordinates
+}));
+---
+
+<DestinationLayout
+  title="Seychelles - Interactive Guide"
+  headerTitle="Explore Seychelles"
+  imagePath="/seychelles.jpg"
+  imageAlt="Beautiful beaches and granite rocks of Seychelles"
+>
+  <div class="seychelles-content">
+    <TripOverview {...tripDetails} />
+    
+    <section class="map-section">
+      <h2>Interactive Map</h2>
+      <p class="map-description">
+        Explore key locations across the Seychelles islands. Click on markers to learn more about each destination.
+      </p>
+      <div class="map-container">
+        <SeychellesMap />
+      </div>
+    </section>
+
+    <section class="itinerary-section">
+      <h2>Day by Day Itinerary</h2>
+      <p class="section-description">A carefully planned journey through the best of Seychelles</p>
+
+      <div class="itinerary-wrapper">
+        <div class="itinerary-container" id="itineraryContainer">
+          <div class="timeline-content">
+            <ItineraryTimeline itinerary={itinerary} />
+          </div>
+          <div class="fog-overlay" id="fogOverlay"></div>
+          <button id="expandButton" class="expand-button">Show More</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="highlights-section">
+      <h2>Trip Highlights</h2>
+      <p class="section-description">What makes this journey special</p>
+      <TripHighlights highlights={highlights} />
+    </section>
+  </div>
+</DestinationLayout>
+
+<script define:vars={{ locations: locationData }}>
+  // Make locations data available to the map
+  window.seychellesLocations = locations;
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const button = document.getElementById('expandButton');
+    const container = document.getElementById('itineraryContainer');
+    const fog = document.getElementById('fogOverlay');
+
+    if (button && container && fog) {
+      button.addEventListener('click', function() {
+        if (container.classList.contains('expanded')) {
+          // Collapse
+          container.style.maxHeight = '400px';
+          fog.style.opacity = '1';
+          button.textContent = 'Show More';
+          container.classList.remove('expanded');
+        } else {
+          // Expand
+          container.style.maxHeight = container.scrollHeight + 'px';
+          fog.style.opacity = '0';
+          button.textContent = 'Show Less';
+          container.classList.add('expanded');
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .seychelles-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  section {
+    margin-bottom: 4rem;
+    width: 100%;
+  }
+
+  h2 {
+    color: var(--primary);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .section-description,
+  .map-description {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+  }
+
+  .map-container {
+    width: 70%;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .itinerary-wrapper {
+    width: 100%;
+    position: relative;
+    padding: 0 1rem;
+  }
+
+  .itinerary-container {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease;
+  }
+
+  .timeline-content {
+    width: 100%;
+    padding-left: 2rem;
+    box-sizing: border-box;
+  }
+
+  .itinerary-container.expanded {
+    max-height: none;
+  }
+
+  .fog-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .expand-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    appearance: none;
+    box-shadow: none;
+  }
+
+  .expand-button:hover {
+    background-color: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  @media (max-width: 768px) {
+    .seychelles-content {
+      padding: 1rem;
+    }
+
+    .itinerary-wrapper {
+      padding: 0 0.5rem;
+    }
+
+    .timeline-content {
+      padding-left: 1.5rem;
+    }
+
+    .map-container {
+      width: 90%;
+      aspect-ratio: 16 / 10;
+    }
+
+    .expand-button {
+      padding: 0.5rem 1rem;
+    }
+  }
+</style>

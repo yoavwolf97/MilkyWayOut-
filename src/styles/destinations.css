@@ -1,0 +1,26 @@
+:root {
+  --background-dark: #0F172A;
+  --accent: #8B5CF6;
+  --accent-gradient: linear-gradient(45deg, var(--accent), #D946EF);
+  --text-light: #94A3B8;
+}
+
+.destinations-page {
+  min-height: 100vh;
+  background: var(--background-dark);
+  color: white;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .destinations-page {
+    padding: 1rem;
+  }
+}
+</style>

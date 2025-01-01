@@ -1,0 +1,87 @@
+---
+interface Props {
+  filters: {
+    name: string;
+    options: { value: string; label: string }[];
+  }[];
+}
+
+const { filters } = Astro.props;
+---
+
+<div class="filter-bar">
+  {filters.map(filter => (
+    <div class="filter-group">
+      <select 
+        class="filter-select" 
+        data-filter={filter.name}
+        aria-label={`Filter by ${filter.name}`}
+      >
+        <option value="">{filter.name === 'bestTime' ? 'All Year' : `All ${filter.name}`}</option>
+        {filter.options.map(option => (
+          <option value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </div>
+  ))}
+</div>
+
+<style>
+  .filter-bar {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 2rem 2rem;
+  }
+
+  .filter-select {
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(15, 23, 42, 0.9);  /* Darker blue background */
+    color: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    transition: all 0.3s ease;
+    min-width: 200px;
+  }
+
+  .filter-select:hover {
+    background-color: rgba(15, 23, 42, 1);  /* Slightly darker on hover */
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: rgb(59, 130, 246);
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.5);
+  }
+
+  .filter-select option {
+    background: rgb(15, 23, 42);  /* Dark blue background for options */
+    color: white;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .filter-bar {
+      padding: 1rem;
+      margin: 0 1rem 1.5rem;
+    }
+
+    .filter-select {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+</style>

@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { travelCosts } from '../data/travelCosts';
+
+// Sort countries alphabetically
+const sortedCosts = [...travelCosts].sort((a, b) => 
+  a.country.localeCompare(b.country)
+);
+
+function formatCountryName(name: string): string {
+  return name.split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+---
+
+<Layout title="Travel Costs by Country">
+  <div class="countries-page">
+    <div class="container">
+      <h1>Travel Costs by Country</h1>
+      <p class="description">Daily budget ranges for countries around the world</p>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>Budget (Low)</th>
+              <th>Budget (Average)</th>
+              <th>Budget (High)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedCosts.map(country => (
+              <tr>
+                <td>{formatCountryName(country.country)}</td>
+                <td>${country.low.toFixed(2)}</td>
+                <td>${country.mid.toFixed(2)}</td>
+                <td>${country.high.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .countries-page {
+    padding: 2rem;
+    background: #F8FAFC;
+    min-height: calc(100vh - 5rem);
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #1E293B;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .description {
+    text-align: center;
+    color: #64748B;
+    margin-bottom: 2rem;
+  }
+
+  .table-container {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  th {
+    background: #F1F5F9;
+    font-weight: 600;
+    color: #1E293B;
+  }
+
+  td {
+    color: #64748B;
+  }
+
+  tr:hover {
+    background: #F8FAFC;
+  }
+
+  td:first-child {
+    color: #1E293B;
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .countries-page {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+</style>

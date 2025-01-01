@@ -1,0 +1,39 @@
+---
+---
+<div class="no-results hidden">
+  <p>No destinations match your selected filters</p>
+  <button class="reset-filters">Reset Filters</button>
+</div>
+
+<style>
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    margin: 2rem;
+  }
+
+  .no-results.hidden {
+    display: none;
+  }
+
+  p {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+  }
+
+  .reset-filters {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .reset-filters:hover {
+    background: var(--accent-dark);
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+interface Props {
+  costs: {
+    low: number;
+    mid: number;
+    high: number;
+  } | null;
+}
+
+const { costs } = Astro.props;
+---
+
+<div class="cost-info">
+  <h3>Daily Travel Costs</h3>
+  {costs ? (
+    <div class="costs">
+      <div class="cost-item">
+        <span class="cost-label">Budget:</span>
+        <span class="cost-value">${costs.low}/day</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-label">Average:</span>
+        <span class="cost-value">${costs.mid}/day</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-label">Luxury:</span>
+        <span class="cost-value">${costs.high}/day</span>
+      </div>
+    </div>
+  ) : (
+    <p class="no-costs">Cost information is currently unavailable</p>
+  )}
+</div>
+
+<style>
+  .cost-info {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .costs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  .cost-label {
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  .cost-value {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .no-costs {
+    color: var(--text-light);
+    text-align: center;
+    padding: 1rem;
+    font-style: italic;
+  }
+</style>

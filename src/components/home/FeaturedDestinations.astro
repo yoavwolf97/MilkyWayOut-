@@ -1,0 +1,127 @@
+---
+import { destinations } from '../../data/destinations';
+import DestinationCard from '../destinations/DestinationCard.astro';
+
+function getDestinationUrl(name: string): string {
+  return `/destinations/${name.toLowerCase().replace(/\s+/g, '-')}`;
+}
+---
+
+<section class="featured-destinations">
+  <h2>Featured Destinations</h2>
+  <div class="destinations-grid" id="featured-destinations">
+    <!-- Destinations will be populated by JavaScript -->
+  </div>
+  <div class="no-starred" id="no-starred">
+    <p>No starred destinations yet.</p>
+    <a href="/destinations" class="browse-link">Browse Destinations</a>
+  </div>
+</section>
+
+<script>
+  function updateFeaturedDestinations() {
+    const grid = document.getElementById('featured-destinations');
+    const noStarred = document.getElementById('no-starred');
+    if (!grid || !noStarred) return;
+
+    const starred = localStorage.getItem('starredDestinations');
+    const starredList = starred ? JSON.parse(starred) : [];
+
+    if (starredList.length === 0) {
+      grid.style.display = 'none';
+      noStarred.style.display = 'block';
+      return;
+    }
+
+    grid.style.display = 'grid';
+    noStarred.style.display = 'none';
+
+    // Fetch and render starred destinations
+    fetch('/api/destinations')
+      .then(response => response.json())
+      .then(destinations => {
+        const starredDestinations = destinations.filter(d => 
+          starredList.includes(d.name.toLowerCase().replace(/\s+/g, '-'))
+        );
+        
+        grid.innerHTML = starredDestinations
+          .map(destination => `
+            <a href="/destinations/${destination.name.toLowerCase().replace(/\s+/g, '-')}" class="grid-item">
+              <div class="destination-card">
+                <div class="card-header">
+                  <h3>
+                    <span class="planet-icon">${destination.planet === 'mars' ? '🔴' : '🌍'}</span>
+                    ${destination.name}
+                  </h3>
+                </div>
+                <p class="description">${destination.description}</p>
+                <div class="meta">
+                  <span>${destination.duration}</span>
+                  <span>•</span>
+                  <span>$${destination.costRange.min.toLocaleString()} - $${destination.costRange.max.toLocaleString()}</span>
+                </div>
+              </div>
+            </a>
+          `)
+          .join('');
+      });
+  }
+
+  // Update on load and when stars change
+  window.addEventListener('load', updateFeaturedDestinations);
+  window.addEventListener('starredDestinationsChanged', updateFeaturedDestinations);
+</script>
+
+<style>
+  .featured-destinations {
+    padding: 4rem 0;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text);
+    font-size: 2rem;
+  }
+
+  .destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+  }
+
+  .no-starred {
+    text-align: center;
+    padding: 3rem;
+    background: var(--background);
+    border-radius: 1rem;
+    margin: 2rem;
+    display: none;
+  }
+
+  .browse-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .browse-link:hover {
+    background: var(--primary-dark);
+  }
+
+  @media (max-width: 768px) {
+    .featured-destinations {
+      padding: 2rem 0;
+    }
+
+    .destinations-grid {
+      padding: 0 1rem;
+    }
+  }
+</style>

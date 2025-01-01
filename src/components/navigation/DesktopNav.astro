@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const menuItems = [
+  { path: '/', label: 'Home' },
+  { path: '/destinations', label: 'Destinations' },
+  { path: '/calculator', label: 'Calculator' }
+];
+---
+
+<nav class="desktop-nav">
+  <div class="nav-content">
+    <a href="/" class="logo-link">
+      <Image 
+        src="/half_logo.jpg"
+        alt="MilkyWayOut"
+        width={200}
+        height={80}
+        class="nav-logo"
+      />
+    </a>
+    <div class="nav-links">
+      {menuItems.map(item => (
+        <a 
+          href={item.path} 
+          class={`nav-button ${currentPath === item.path ? 'active' : ''}`}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<style>
+  .desktop-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .nav-button {
+    color: #1E293B;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    background: #FED7AA;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .nav-button:hover, 
+  .nav-button.active {
+    background: #FFEDD5;
+    border-color: #EA580C;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .desktop-nav {
+      display: none;
+    }
+  }
+</style>

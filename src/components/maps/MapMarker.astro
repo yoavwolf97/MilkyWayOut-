@@ -1,0 +1,46 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  link: string;
+  island: string;
+}
+
+const { name, description, link, island } = Astro.props;
+---
+
+<div class="popup-content">
+  <h3>{name}</h3>
+  <p>{description}</p>
+  <a href={link} class="popup-link">Learn more about {island}</a>
+</div>
+
+<style>
+  .popup-content {
+    padding: 0.5rem;
+  }
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--primary);
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 0 0 0.5rem 0;
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+
+  .popup-link {
+    display: inline-block;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .popup-link:hover {
+    text-decoration: underline;
+  }
+</style>

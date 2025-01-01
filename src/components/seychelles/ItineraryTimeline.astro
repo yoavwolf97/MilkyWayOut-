@@ -1,0 +1,105 @@
+---
+interface DayPlan {
+  days: string;
+  location: string;
+  accommodation: string;
+  activities: string[];
+}
+
+interface Props {
+  itinerary: DayPlan[];
+}
+
+const { itinerary } = Astro.props;
+---
+
+<div class="timeline">
+  {itinerary.map((item) => (
+    <div class="timeline-item">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <h3>Days {item.days}: {item.location}</h3>
+        <p class="accommodation">
+          <span class="icon">🏨</span> {item.accommodation}
+        </p>
+        <ul class="activities">
+          {item.activities.map((activity) => (
+            <li>{activity}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 2rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+  }
+
+  .timeline-marker {
+    position: absolute;
+    left: -2.4rem;
+    width: 1rem;
+    height: 1rem;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  .timeline-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .accommodation {
+    color: var(--text-light);
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .activities {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+  }
+
+  .activities li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .activities li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+interface Props {
+  destinationId: string;
+  className?: string;
+}
+
+const { destinationId, className = '' } = Astro.props;
+---
+
+<button 
+  class={`star-button ${className}`}
+  data-destination-id={destinationId}
+  aria-label="Star this destination"
+>
+  <svg class="star-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<style>
+  .star-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.2s ease;
+    color: var(--text-light);
+  }
+
+  .star-button:hover {
+    transform: scale(1.1);
+  }
+
+  .star-button.starred .star-icon {
+    fill: #FCD34D;
+    stroke: #F59E0B;
+  }
+
+  .star-icon {
+    transition: all 0.3s ease;
+  }
+</style>
+
+<script>
+  class StarButton extends HTMLElement {
+    constructor() {
+      super();
+      this.initializeButton();
+    }
+
+    initializeButton() {
+      const button = this.querySelector('button');
+      if (!button) return;
+
+      const destinationId = button.dataset.destinationId;
+      if (!destinationId) return;
+
+      // Check initial state
+      const starred = this.isStarred(destinationId);
+      if (starred) button.classList.add('starred');
+
+      // Add click handler
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.toggleStar(destinationId, button);
+      });
+    }
+
+    isStarred(destinationId: string): boolean {
+      const starred = localStorage.getItem('starredDestinations');
+      if (!starred) return false;
+      return JSON.parse(starred).includes(destinationId);
+    }
+
+    toggleStar(destinationId: string, button: HTMLButtonElement) {
+      const starred = localStorage.getItem('starredDestinations');
+      let starredList = starred ? JSON.parse(starred) : [];
+
+      if (this.isStarred(destinationId)) {
+        starredList = starredList.filter((id: string) => id !== destinationId);
+        button.classList.remove('starred');
+      } else {
+        starredList.push(destinationId);
+        button.classList.add('starred');
+      }
+
+      localStorage.setItem('starredDestinations', JSON.stringify(starredList));
+      
+      // Dispatch event for other components
+      window.dispatchEvent(new CustomEvent('starredDestinationsChanged'));
+    }
+  }
+
+  customElements.define('star-button', StarButton);
+</script>

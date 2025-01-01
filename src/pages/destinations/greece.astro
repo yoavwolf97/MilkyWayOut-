@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DestinationHeader from '../../components/destinations/DestinationHeader.astro';
+---
+
+<Layout title="Greece - MilkyWayOut">
+  <DestinationHeader 
+    title="Greece"
+    imagePath="/greece.jpg"
+    imageAlt="Winding roads through Greek mountains with stunning coastal views"
+  />
+
+  <div class="content">
+    <h2>Discover Greece</h2>
+    <p>Experience the birthplace of Western civilization, where ancient history meets stunning Mediterranean landscapes. From the iconic Acropolis to the sun-drenched islands of the Aegean, Greece offers an unforgettable journey through time and beauty.</p>
+    
+    <h3>Highlights</h3>
+    <ul>
+      <li>Ancient ruins and historical sites</li>
+      <li>Beautiful islands and beaches</li>
+      <li>Mediterranean cuisine</li>
+      <li>Traditional villages</li>
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+</style>

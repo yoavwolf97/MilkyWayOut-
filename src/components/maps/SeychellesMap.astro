@@ -1,0 +1,106 @@
+---
+import { getSeychellesLocations } from '../../lib/supabase/queries';
+import MapMarker from './MapMarker.astro';
+
+const locations = await getSeychellesLocations();
+
+// Map configuration
+const mapConfig = {
+  center: [-4.6827, 55.4804],
+  zoom: 10,
+  tileLayer: {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '© OpenStreetMap contributors'
+  }
+};
+---
+
+<div class="map-container">
+  <div id="seychelles-map"></div>
+</div>
+
+<!-- Hidden templates for markers -->
+{locations.map(location => (
+  <template id={`marker-${location.id}`}>
+    <MapMarker
+      name={location.name}
+      description={location.description}
+      link={location.link}
+      island={location.island}
+    />
+  </template>
+))}
+
+<script>
+  // Load Leaflet CSS
+  const linkEl = document.createElement('link');
+  linkEl.rel = 'stylesheet';
+  linkEl.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(linkEl);
+
+  // Load Leaflet JS and initialize map
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload = initializeMap;
+  document.head.appendChild(script);
+
+  function initializeMap() {
+    const mapConfig = {
+      center: [-4.6827, 55.4804],
+      zoom: 10,
+      tileLayer: {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '© OpenStreetMap contributors'
+      }
+    };
+
+    // Get locations data from templates
+    const locations = Array.from(document.querySelectorAll('template')).map(template => {
+      const id = template.id.replace('marker-', '');
+      const content = template.innerHTML;
+      return { id, content };
+    });
+
+    // Initialize map
+    const map = L.map('seychelles-map').setView(mapConfig.center, mapConfig.zoom);
+
+    L.tileLayer(mapConfig.tileLayer.url, {
+      attribution: mapConfig.tileLayer.attribution
+    }).addTo(map);
+
+    // Add markers
+    locations.forEach(location => {
+      const locationData = window.seychellesLocations?.find(l => l.id === location.id);
+      if (!locationData) return;
+
+      const marker = L.marker([locationData.coordinates.x, locationData.coordinates.y])
+        .addTo(map)
+        .bindPopup(location.content);
+
+      marker.on('mouseover', function() {
+        this.openPopup();
+      });
+    });
+  }
+</script>
+
+<style>
+  .map-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  #seychelles-map {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .map-container {
+      height: 400px;
+    }
+  }
+</style>

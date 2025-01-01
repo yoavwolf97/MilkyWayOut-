@@ -1,0 +1,83 @@
+---
+---
+
+<button id="mobile-menu-toggle" class="hamburger-button" aria-label="Toggle menu">
+  <div class="hamburger-lines">
+    <span class="line"></span>
+    <span class="line"></span>
+    <span class="line"></span>
+  </div>
+</button>
+
+<style>
+  .hamburger-button {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 1001;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .hamburger-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .hamburger-lines {
+    position: relative;
+    width: 100%;
+    height: 14px; /* Reduced from 20px for tighter spacing */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .line {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background-color: var(--primary);
+    border-radius: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+  }
+
+  .hamburger-button.active .line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg); /* Adjusted from 9px */
+  }
+
+  .hamburger-button.active .line:nth-child(2) {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+
+  .hamburger-button.active .line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg); /* Adjusted from -9px */
+  }
+
+  /* Hover animations when not active */
+  .hamburger-button:not(.active):hover .line:nth-child(1) {
+    transform: translateY(-1px);
+  }
+
+  .hamburger-button:not(.active):hover .line:nth-child(3) {
+    transform: translateY(1px);
+  }
+</style>
+
+<script>
+  const button = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  button?.addEventListener('click', () => {
+    button.classList.toggle('active');
+    menu?.classList.toggle('active');
+  });
+</script>

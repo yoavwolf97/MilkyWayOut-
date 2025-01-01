@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import HamburgerButton from './HamburgerButton.astro';
+import MobileMenu from './MobileMenu.astro';
+---
+
+<nav class="mobile-navbar">
+  <div class="navbar-content">
+    <HamburgerButton />
+    <a href="/" class="logo-link">
+      <Image 
+        src="/half_logo.jpg"
+        alt="MilkyWayOut"
+        width={140}
+        height={56}
+        class="nav-logo"
+      />
+    </a>
+  </div>
+  <MobileMenu />
+</nav>
+
+<style>
+  .mobile-navbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .navbar-content {
+    height: 70px;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .logo-link {
+    display: block;
+  }
+
+  .nav-logo {
+    width: 140px;
+    height: 56px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-navbar {
+      display: block;
+    }
+  }
+</style>

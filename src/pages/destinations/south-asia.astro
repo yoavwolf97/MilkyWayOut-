@@ -1,0 +1,65 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DestinationHeader from '../../components/destinations/DestinationHeader.astro';
+---
+
+<Layout title="South Asia - MilkyWayOut">
+  <DestinationHeader 
+    title="South Asia"
+    imagePath="/south_asia.jpg"
+    imageAlt="Majestic view of the Himalayas with traditional prayer flags"
+  />
+
+  <div class="content">
+    <h2>Explore South Asia</h2>
+    <p>
+      South Asia is a vibrant tapestry of cultures, languages, and landscapes. From the lofty peaks of the Himalayas to the lush valleys of Bangladesh, each region offers its own charm. Marvel at centuries-old monuments in India, explore bustling bazaars in Pakistan, or savor Sri Lanka's aromatic tea. The diverse cuisines blend spices and flavors, reflecting a rich heritage. Beyond its historical treasures, South Asia teems with wildlife, including tigers, elephants, and rare bird species. Friendly locals welcome visitors with warm hospitality, making every journey memorable. Whether you seek adventure, relaxation, or cultural immersion, South Asia promises an unforgettable experience overall.
+    </p>
+    
+    <h3>Highlights</h3>
+    <ul>
+      <li>Ancient monuments and historical sites</li>
+      <li>Diverse cultural experiences</li>
+      <li>Rich culinary traditions</li>
+      <li>Natural wonders and wildlife</li>
+      <li>Traditional arts and crafts</li>
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: var(--text);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+</style>
